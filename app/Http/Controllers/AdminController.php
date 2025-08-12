@@ -36,10 +36,10 @@ class AdminController extends Controller
 
     public function homepage()
     {
-if(Auth::id()) {
-        $posts = Post::where('status', 'approved')->with('user', 'comments.user', 'comments.replies.user')->get();
-        return view('user.home', compact('posts'));
-    }else {
+        if (Auth::id()) {
+            $posts = Post::where('status', 'approved')->with('user', 'comments.user', 'comments.replies.user')->get();
+            return view('user.home', compact('posts'));
+        } else {
             return redirect()->route('login');
         }
     }
