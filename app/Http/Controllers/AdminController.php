@@ -26,7 +26,7 @@ class AdminController extends Controller
             } else if ($usertype == 'user') {
                 $user = Auth::user();
                 $posts = Post::with('user', 'comments.user', 'comments.replies.user')->where('status', 'approved')->get();
-$noPosts = $posts->isEmpty();
+                $noPosts = $posts->isEmpty();
                 return view('user.home', compact('posts', 'user', 'noPosts'));
             }
         } else {
@@ -36,8 +36,12 @@ $noPosts = $posts->isEmpty();
 
     public function homepage()
     {
+if(Auth::id()) {
         $posts = Post::where('status', 'approved')->with('user', 'comments.user', 'comments.replies.user')->get();
         return view('user.home', compact('posts'));
+    }else {
+            return redirect()->route('login');
+        }
     }
 
     public function createPost()
